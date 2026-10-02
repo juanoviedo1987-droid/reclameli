@@ -1,111 +1,98 @@
 # Modelo de Negocio - ReclaMeli 💼
 
-> **Micro-SaaS B2B de Auditoría Forense y Recupero de Fondos para Sellers de Mercado Libre Argentina.**
+> **Micro-SaaS B2B de Auditoría Forense y Gestión de Compensaciones para Sellers de Mercado Libre Argentina.**
 
 ---
 
 ## 1. Resumen Ejecutivo y Propuesta de Valor
 
-### El Problema
-Los vendedores de Mercado Libre (MeLi) en Argentina operan con márgenes cada vez más ajustados y sufren una pérdida sistemática e invisible: **entre el 2% y el 5% de su facturación bruta anual queda retenida o perdida** debido a:
-1. **Devoluciones congeladas en tránsito:** El comprador despacha el producto, MeLi le reembolsa el dinero anticipadamente, pero el paquete queda congelado en estado *"En camino"* en el correo. Pasados **30 días corridos**, MeLi archiva la orden y el dinero se pierde definitivamente.
-2. **Merma oculta en Mercado Envíos Full:** Mercadería devuelta que ingresa al centro de distribución (Villa Madero) pero jamás se reingresa al inventario vendible ni se indemniza automáticamente.
-3. **Siniestros no compensados:** Paquetes declarados siniestrados o extraviados por la colecta/correo donde no se emite la compensación correspondiente en Mercado Pago.
-4. **Fricción del soporte automatizado:** El bot de MeLi desvía las quejas indicando *"el paquete sigue en camino"*; el 60% de los sellers abandona el reclamo por falta de tiempo o desconocimiento de la normativa interna de la plataforma.
+### El Problema Operativo
+Los vendedores de Mercado Libre (MeLi) en Argentina sufren pérdidas sistemáticas en el circuito de logística inversa debido a falta de seguimiento y opacidad en las políticas de soporte:
+1. **Devoluciones congeladas en tránsito:** El comprador despacha la devolución y MeLi le reembolsa el dinero de forma anticipada. El paquete queda inmovilizado en *"En camino"*.
+   * **Plazo real de reclamo:** La ventana de reclamo se habilita **únicamente una vez vencida la fecha prometida de entrega** de la devolución (no antes).
+   * **Límite duro de caducidad:** Pasados **60 días corridos desde la creación de la devolución**, MeLi ya no reconoce reclamos ni bonificaciones por demora.
+2. **Devoluciones marcadas como "Entregadas" no recibidas:** Si el tracking marca entrega al vendedor pero este no recibió el paquete, existe una ventana de **30 días corridos desde esa supuesta entrega** para reclamar.
+3. **Canal de reclamo estricto:** El reclamo debe iniciarse puntualmente desde el **detalle de la venta afectada** (`/ventas/{id}/detalle`) una vez vencida la fecha prometida, adjuntando datos fácticos (número de envío, fecha de despacho, último movimiento postal y estado).
 
-### La Solución
-**ReclaMeli** audita en segundos los reportes estándar de ventas y devoluciones (Excel/CSV) que el seller ya descarga de la plataforma, detecta con precisión matemática cada peso retenido y genera un **Dossier Fáctico de Reclamo** con los textos normativos, enlaces directos y el instructivo exacto (incluyendo el hack del botón "NO") para sortear el bot y forzar la indemnización humana inmediata.
+---
+
+### ⚠️ Hallazgo Crítico de Negocio (Validado con Soporte de MeLi)
+En consultas directas a soporte de Mercado Libre, la plataforma sostiene textualmente:
+> *"Lo que puede solicitarse por una demora es una bonificación; no es un reembolso del valor del producto."*
+
+Asimismo, MeLi aclara que:
+* No garantiza compensación automática solo por seguimiento congelado (cada caso queda sujeto a revisión).
+* La compensación puede instrumentarse mediante crédito en Mercado Pago o emisión de Nota de Crédito por cargos/tarifas.
+
+> [!WARNING] **Impacto sobre la Hipótesis Central del Negocio:**
+> El modelo original asumía que el seller recupera el 100% del valor de venta del producto extraviado. Si MeLi únicamente liquida una **bonificación parcial por demora de flete**, el volumen de dinero recuperado real será inferior a las estimaciones preliminares. **Determinar el porcentaje real de liquidación (bonificación vs. valor completo) es la incógnita prioritaria que debe resolver el Caso Testigo en Fase 2.**
 
 ---
 
 ## 2. Segmentación de Clientes (ICP - Ideal Customer Profile)
 
-| Segmento | Características | Volumen Mensual | Nivel de Dolor |
+| Segmento | Volumen Mensual | Perfil y Necesidad | Impacto Económico Estimado* |
 |---|---|---|---|
-| **Tier 1 (Core Target)** | Sellers *MercadoLíder Platinum y Gold* que usan Mercado Envíos Colecta y Full. | > 500 envíos/mes | **Crítico:** Acumulan entre \$500.000 y \$3.000.000 ARS mensuales en mercadería retenida. |
-| **Tier 2 (Growth)** | Sellers *MercadoLíder* medianos en crecimiento, sin departamento de conciliación administrativa. | 150 a 500 envíos/mes | **Alto:** Cada devolución no recuperada afecta sensiblemente su flujo de caja semanal. |
-| **Canal Indirecto (Partners)** | Consultores certificados de Mercado Libre y agencias de gestión de cuentas (3PL / Ads). | Gestionan carteras de 10-30 cuentas | Buscan ofrecer a sus clientes una herramienta de alto impacto para justificar sus honorarios mensuales. |
+| **Tier 1 (Core Target)** | > 500 envíos/mes | Sellers *Platinum y Gold* con alto flujo de logística inversa (Colecta / Full). | Acumulan decenas de paquetes demorados mensualmente. *(Monto neto sujeto a validación de bonificación vs reembolso)*. |
+| **Tier 2 (Growth)** | 150 a 500 envíos/mes | Sellers en crecimiento sin personal administrativo dedicado a conciliar trackings. | Sufren la pérdida de capital de trabajo por devoluciones no reintegradas. |
+| **Partners (Indirecto)** | Carteras de 10-30 cuentas | Consultores certificados y agencias integrales de MeLi. | Buscan optimizar el balance mensual de sus clientes auditando ineficiencias de soporte. |
+
+*\*Nota: Las proyecciones monetarias quedan catalogadas como **hipótesis preliminar** hasta medir empíricamente los importes liquidados por MeLi.*
 
 ---
 
-## 3. Arquitectura de Precios y Embudo de Monetización
+## 3. Arquitectura de Precios y Embudo (Estado: EN REVISIÓN)
 
-Para eliminar el riesgo de cobranza y la desconfianza del seller argentino, se define una estrategia en dos fases:
+Debido al hallazgo sobre las bonificaciones de MeLi, **el pricing final y la estructura de paywall quedan congelados hasta contar con datos empíricos de liquidación.**
 
 ```
-[ Auditoría Gratuita ] 
-         ↓ (Detecta ej. $1.500.000 ARS retenidos)
-[ Caballo de Troya ] 
-         ↓ (Desbloqueo de 1 caso de alto valor GRATIS -> Seller cobra $60.000 en 48 hs)
-[ Paywall de Desbloqueo ]
-         ↓ (Paga Pack $39.900 ARS para desbloquear los otros 9 dossiers con la plata recién cobrada)
-[ Suscripción SaaS Recurrente ]
-           ($49.000 ARS/mes para auditorías continuas y prevención de los 30 días)
+[ Auditoría Diagnóstica ] 
+         ↓ (Identifica trackings vencidos de fecha prometida dentro de la ventana de 60 días)
+[ Caso Testigo / Fase Piloto ] 
+         ↓ (Validar: ¿Cuánto paga MeLi en ARS respecto al valor del producto?)
+[ Calibración de Modelo de Cobro ]
+         ↓ (Fijar pricing acorde al valor económico real recuperado)
 ```
 
-### Fase 1: Validación y Casos Testigo (Primeros 5 Sellers)
-* **Modalidad:** *Concierge Onboarding* con **Success Fee puro (10% al 15%)**.
-* **Condición:** Acompañamiento asistido en vivo (llamada de 15 min o guía directa) para garantizar que el seller ejecute el reclamo correctamente.
-* **Cobro:** Únicamente contra la acreditación efectiva del dinero en su cuenta de Mercado Pago.
-* **Objetivo estratégico:** 
-  * Validar la tasa de éxito de cobro real (apuntando al 80%-90%).
-  * Ajustar las plantillas del dossier frente a las respuestas reales de soporte.
-  * Obtener métricas comprobables y testimonios en video/capturas de pantalla para marketing.
+### Fase 1: Validación y Casos Testigo (Piloto Inicial)
+* **Modalidad:** *Concierge Onboarding* con **Success Fee puro (10% al 15% del monto efectivamente liquidado)**.
+* **Condición:** Reclamo asistido desde el detalle de la orden tras vencer la fecha prometida.
+* **Cobro:** Únicamente contra la acreditación efectiva de fondos o nota de crédito comprobable.
+* **Preguntas bloqueantes que este piloto debe responder:**
+  1. ¿Mercado Libre indemniza el reclamo fáctico?
+  2. **¿Cuánto paga exactamente?** ¿Reembolsa el valor de venta, el costo o una bonificación fija/variable de transporte?
+  3. ¿Cómo lo liquida? ¿Saldo disponible en Mercado Pago o crédito para comisiones futuras?
 
-### Fase 2: Escala Comercial (Teaser + Caballo de Troya + Paywall)
-
-#### Paso A: Diagnóstico Teaser (100% Gratuito)
-* El seller sube su archivo Excel/CSV sin registro previo ni permisos invasivos de API.
-* El motor analiza los datos en < 30 segundos y muestra una pantalla de impacto:
-  > *"Detectamos **\$1.850.000 ARS** en 14 reclamos recuperables en riesgo de caducidad."*
-
-#### Paso B: El "Caballo de Troya" (Derribo de la Desconfianza)
-* Se desbloquea de forma **100% gratuita el dossier del reclamo de mayor valor individual** (ej. una orden de \$60.000 ARS).
-* El seller lo presenta en soporte siguiendo el instructivo paso a paso.
-* Al recibir el dinero en su cuenta en 48-72 hs, la barrera de desconfianza queda destruida: el producto probó su valor con dinero real en mano.
-
-#### Paso C: Packs de Desbloqueo y Suscripción (Monetización Directa)
-Los dossiers restantes se entregan mediante pago por adelantado (vía Mercado Pago Checkout):
-
-1. **Pack "Rescate de Lote" (Pago Único por Auditoría):**
-   * **Precio sugerido:** **\$29.900 a \$39.900 ARS**.
-   * **Propuesta:** Recupera entre \$300.000 y \$2.000.000 ARS con un ROI de 10x a 50x inmediato.
-   * **Garantía Blindada (Riesgo Cero):** Si Mercado Libre rechaza un caso imputable a un error del dossier, se reembolsa el 100% del pago.
-
-2. **Plan "Monitoreo Preventivo" (Suscripción Mensual SaaS):**
-   * **Precio sugerido:** **\$49.000 ARS / mes** (o abono trimestral bonificado).
-   * **Incluye:**
-     * Auditorías semanales ilimitadas.
-     * Alertas de semáforo (Verde: < 10 días, Amarillo: 10-20 días, Rojo URGENTE: 21-29 días).
-     * Soporte prioritario con actualizaciones de cambios en las políticas de MeLi.
-     * Dossiers ejecutables ilimitados.
+### Fase 2: Escala Comercial (Provisoria - Sujeta a Calibración)
+* **Diagnóstico Inicial:** Auditoría de reporte Excel/CSV para detectar órdenes con fecha prometida vencida antes del límite de 60 días.
+* **Monetización (En definición):**
+  * Si MeLi paga el **valor completo del producto** $\rightarrow$ Viable esquema de Packs fijos (\$29.900 - \$39.900 ARS) y Suscripción (\$49.000 ARS/mes).
+  * Si MeLi paga solo una **bonificación simbólica por demora** $\rightarrow$ El pricing deberá reestructurarse a micro-tarifas por reclamo o Success Fee automatizado.
+* **Política de Garantía:** **No se ofrecerá ninguna "Garantía de reembolso 100%"** hasta contar con la estadística real de pagos de soporte de MeLi.
 
 ---
 
-## 4. Ventajas Competitivas y Barreras de Entrada (Moats)
+## 4. Ventajas Competitivas y Moats
 
-1. **Cero Fricción de Integración (No-API First):**
-   * Las herramientas tradicionales exigen permisos OAuth completos de la cuenta de Mercado Libre, lo que genera rechazo inmediato por miedo al baneo, robo de datos o suspensión.
-   * ReclaMeli opera sobre exportes de Excel que el seller ya tiene a mano: privacidad total, sin riesgo para la cuenta.
-2. **Especialización Forense en Jurisprudencia de MeLi Argentina:**
-   * No es un simple dashboard visual; es un motor de litigio administrativo que conoce los programas internos (FPP en Full, primer escaneo en Tradicional, plazos de 30 días, notas de crédito de ajuste).
-3. **El Dossier Fáctico:**
-   * Soporte de MeLi rechaza reclamos genéricos. Los dossiers de ReclaMeli citan número de envío, fecha de primer escaneo, tracking congelado, artículos de los Términos y Condiciones de Mercado Envíos y el texto exacto listo para pegar.
+1. **Cumplimiento Estricto del Procedimiento MeLi:**
+   * ReclaMeli no dispara reclamos a ciegas: audita que la **fecha prometida esté cumplida** y que el expediente esté dentro de los **60 días límite**, evitando rechazos automáticos de soporte.
+2. **Generación del Dossier Quirúrgico:**
+   * El expediente reúne los 4 datos obligatorios: número de venta/envío, fecha de despacho, estado/último movimiento y motivo fáctico.
+3. **Enfoque No-API / Privacidad Total:**
+   * Procesamiento local en navegador sobre reportes estándar que el seller ya posee, sin solicitar permisos invasivos de cuenta.
 
 ---
 
 ## 5. Estrategia de Adquisición (Go-To-Market)
 
-1. **Outbound Quirúrgico a Sellers Platinum:** Identificación de vendedores líderes en categorías de alta tasa de devolución (Indumentaria, Calzado, Autopartes, Electrónica). Oferta: *"Te auditamos gratis el último trimestre en 2 minutos"*.
-2. **Comunidades y Grupos de Sellers:** Participación en grupos de Facebook ("Vendedores de Mercado Libre Argentina"), foros y canales de Telegram/WhatsApp compartiendo tips operativos reales y ofreciendo el diagnóstico gratuito.
-3. **Alianzas con Consultores MeLi:** Comisión del 20% recurrente para consultores y agencias que incorporen ReclaMeli dentro de su servicio mensual a sellers.
+1. **Enfoque Educativo y de Alerta Temprana:** Explicar a los sellers la regla no escrita: *"Pasados 60 días de la devolución, MeLi ya no reconoce reclamos ni bonificaciones"*.
+2. **Auditoría de Demoras en 30 Segundos:** Demostración en vivo mediante la aplicación web para que el seller vea sus envíos en riesgo de caducar.
+3. **Alianzas con Agencias y Gestores de Cuentas.**
 
 ---
 
-## 6. Métricas Clave de Negocio (KPIs)
+## 6. Métricas Clave de Negocio (KPIs a Medir en Piloto)
 
-* **Tasa de Recupero:** % de expedientes presentados que resultan en indemnización o nota de crédito (Meta: > 80%).
-* **Tiempo Promedio de Indemnización:** Días desde la presentación del dossier hasta el cobro en Mercado Pago (Meta: < 5 días hábiles).
-* **Conversión Teaser -> Pago Único:** % de usuarios que desbloquean el lote completo tras el diagnóstico gratuito (Meta: > 25%).
-* **Conversión Pago Único -> Suscripción:** % de usuarios que pasan a la suscripción mensual tras recuperar su primer lote (Meta: > 35%).
-* **LTV / CAC:** Ratio proyectado superior a 4:1 debido a la bajísima tasa de churn en sellers con alto volumen de devoluciones.
+* **Tasa de Resolución Favorable:** % de expedientes presentados que obtienen resolución económica de MeLi.
+* **Ratio de Compensación Real (%):** $\frac{\text{Monto efectivamente liquidado por MeLi}}{\text{Valor de venta del producto}}$. (Métrica crítica para fijar el pricing final).
+* **Plazo de Liquidación:** Días corridos desde la apertura del reclamo en el detalle de la venta hasta la acreditación.

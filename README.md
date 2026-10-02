@@ -21,11 +21,12 @@ En Mercado Libre Argentina, cuando un comprador inicia una devolución o reclamo
 
 El motor aplica reglas determinísticas sobre los reportes:
 
-| Caso | Regla de Detección | Acción Generada |
+| Caso | Regla de Detección | Acción Generada / Plazo Crítico |
 |---|---|---|
-| **Devolución Congelada** | `Reembolso = SÍ` + `Primer escaneo = SÍ` + `Tracking = En camino` + `Días inactivo > 15` | Alerta urgente con días restantes para los 30 días de caducidad. |
-| **Siniestro No Acreditado** | `Estado = Siniestrado / Extraviado` + `Compensación MP = NO` | Reclamo directo por póliza de flete de Mercado Envíos. |
-| **Faltante en Full** | `Devolución ingresada al CD` + `Alta en stock = NO (> 15 días)` | Intimación por *Programa de Protección Full (FPP)* para compensación de inventario. |
+| **Devolución Congelada en Tránsito** | `Tracking = En camino` + `Fecha prometida de entrega vencida` | Reclamo desde el detalle de la venta una vez vencida la fecha prometida. **Límite duro: 60 días corridos** desde creación de la devolución. |
+| **Devolución Figura Entregada (No Recibida)** | `Tracking = Entregado` + `Vendedor no recibió paquete` | Reclamo formal por entrega no recibida. Ventana: **hasta 30 días** corridos desde la supuesta entrega. |
+| **Siniestro / Extravío Confirmado** | `Estado = Siniestrado / Extraviado` + `Compensación = NO` | Reclamo directo por póliza de flete de Mercado Envíos. |
+| **Faltante en Full** | `Devolución ingresada al CD` + `Alta en stock = NO (> 15 días)` | Intimación por *Programa de Protección Full (FPP)* para compensación de inventario en depósito. |
 
 ---
 
@@ -72,9 +73,10 @@ python scripts/run_audit.py data/samples/reporte_ventas_mock.xlsx
 
 ---
 
-## 🛡️ Tasa de Éxito de Reclamo (Ground Truth)
-* **Vendedor pasivo (espera automática):** 35% - 45% de éxito.
-* **Vendedor con ReclaMeli (dossier fáctico en término):** **80% - 90% de éxito**.
+## 🛡️ Tasa de Éxito y Compensación (Hipótesis a Validar en Fase 2)
+* **Vendedor pasivo (espera automática):** Riesgo de caducidad total al cumplirse los 60 días sin reclamo.
+* **Vendedor con auditoría formal:** **[Tasa no confirmada — Sujeta a validación en caso testigo real]**.
+* ⚠️ **Pregunta crítica abierta del negocio:** Según información de soporte oficial de MeLi, ante una demora prolongada puede corresponder una *bonificación* y no necesariamente el reembolso del 100% del valor del producto. La Fase 2 validará empíricamente **cuánto** paga MeLi respecto al valor de venta y mediante qué mecanismo (Mercado Pago o Nota de Crédito).
 
 ---
 *Desarrollado para el ecosistema de e-commerce de Argentina.*

@@ -98,9 +98,9 @@
 
         <!-- KPI 4: Ventana de Cobertura -->
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ventana Límite</span>
-          <div class="text-2xl md:text-3xl font-bold text-amber-600 mt-1">30 días</div>
-          <span class="text-xs text-slate-500 mt-1 block">Plazo fatal antes del archivo</span>
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Límite Máximo</span>
+          <div class="text-2xl md:text-3xl font-bold text-amber-600 mt-1">60 días</div>
+          <span class="text-xs text-slate-500 mt-1 block">Caducidad de MeLi desde la devolución</span>
         </div>
       </div>
 
@@ -217,17 +217,18 @@
       if (isFull) {
         return `Solicito revisión de inventario y aplicación del Programa de Protección de Envíos Full (FPP) para la orden ${orderId} (${itemTitle}). La devolución fue remitida al centro de almacenamiento con fecha ${dateStr} y no registra reingreso al inventario vendible ni clasificación como descarte tras más de ${daysStalled} días. Solicito investigación de inventario y liquidación de la compensación correspondiente por extravío en depósito.`;
       }
-      return `Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden ${orderId}. La devolución fue admitida por el correo el ${dateStr} (Tracking: ${tracking}) y el seguimiento postal permanece inmovilizado en 'En camino' desde hace ${daysStalled} días corridos, superando largamente el plazo de entrega comprometido. Habiéndose realizado el débito de los fondos hacia el comprador, intimo la anulación del cargo o indemnización de la venta a favor del vendedor bajo la póliza de seguro de transporte de la plataforma.`;
+      return `Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden ${orderId}. La devolución fue admitida por el correo el ${dateStr} (Tracking: ${tracking}) y el seguimiento postal permanece inmovilizado en 'En camino' habiendo superado la fecha prometida de entrega comprometida. Habiéndose realizado el débito de los fondos hacia el comprador y encontrándose el reclamo dentro del plazo de 60 días, solicito la indemnización/bonificación correspondiente a favor del vendedor bajo la póliza de transporte de la plataforma.`;
     }
 
     // Guía de navegación
     function generateNavigationGuide(orderId) {
       return [
-        `1. Ingresar a: https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
-        `2. Ir al pie de página y pulsar 'Ayuda con la venta' (o los tres puntos 'Necesito ayuda').`,
-        `3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.`,
-        `4. ¡HACK CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.`,
-        `5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.`
+        `1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
+        `2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).`,
+        `3. Ir al pie de página y pulsar 'Ayuda con la venta' (o los tres puntos 'Necesito ayuda').`,
+        `4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.`,
+        `5. ¡HACK CLAVE DEL BOTÓN NO!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.`,
+        `6. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.`
       ].join('\n');
     }
 

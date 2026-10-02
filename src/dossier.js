@@ -15,20 +15,20 @@ function generateClaimDossier({ orderId, trackingCode, itemTitle, dateReturnDisp
     `Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos ` +
     `para la orden ${orderId}. ` +
     `La devolución fue admitida por el correo el ${dateReturnDispatchedStr} (Tracking: ${trackingCode}) ` +
-    `y el seguimiento postal permanece inmovilizado en 'En camino' desde hace ${daysStalled} días corridos, ` +
-    `superando largamente el plazo de entrega comprometido. ` +
-    `Habiéndose realizado el débito de los fondos hacia el comprador, intimo la anulación del cargo o indemnización ` +
-    `de la venta a favor del vendedor bajo la póliza de seguro de transporte de la plataforma.`
+    `y el seguimiento postal permanece inmovilizado en 'En camino' habiendo superado la fecha prometida de entrega comprometida. ` +
+    `Habiéndose realizado el débito de los fondos hacia el comprador y encontrándose el reclamo dentro del plazo de 60 días, ` +
+    `solicito la indemnización/bonificación correspondiente a favor del vendedor bajo la póliza de transporte de la plataforma.`
   );
 }
 
 function generateNavigationGuide(orderId) {
   return [
-    `1. Ingresar a: https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
-    `2. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').`,
-    `3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.`,
-    `4. ¡TRUCO CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.`,
-    `5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.`
+    `1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
+    `2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).`,
+    `3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').`,
+    `4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.`,
+    `5. ¡HACK CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.`,
+    `6. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.`
   ].join('\n');
 }
 

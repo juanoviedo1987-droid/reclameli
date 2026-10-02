@@ -50,20 +50,20 @@
 ### 🔍 FASE 2: Archivo Real y Caso Testigo
 - [ ] Obtener 1 reporte real de ventas/devoluciones de Mercado Libre de un seller de confianza (anonimizado).
 - [ ] Ejecutar el archivo en el motor funcional para validar compatibilidad de columnas y formatos reales.
-- [ ] Identificar un caso que cumpla las **4 condiciones clave**:
+- [ ] Identificar un caso que cumpla las **condiciones fácticas obligatorias**:
   1. Envío por Mercado Envíos (Colecta, Tradicional o Full).
-  2. Devolución con escaneo inicial confirmado.
-  3. Dinero reembolsado al comprador.
-  4. Tracking congelado entre 15 y 29 días corridos.
-- [ ] Guiar al seller para ingresar el reclamo en soporte ejecutando el **hack del botón "NO"** con el dossier de ReclaMeli.
-- [ ] Medir tiempo de respuesta y resolución de soporte.
+  2. Devolución despachada con tracking postal identificable.
+  3. **Fecha prometida de entrega vencida** (condición sine qua non para habilitar el reclamo en MeLi).
+  4. **Menos de 60 días corridos desde la creación de la devolución** (plazo máximo de caducidad fijado por MeLi).
+- [ ] Guiar al seller para ingresar el reclamo desde el **detalle de la venta puntual** (`/ventas/{id}/detalle`) ejecutando el **hack del botón "NO"** con el dossier de ReclaMeli.
+- [ ] Medir tiempo de respuesta, canal de acreditación (Mercado Pago vs Nota de Crédito) y **monto efectivamente liquidado**.
 
 ---
 
-### 🛑 GATE DE DECISIÓN (Hito de Viabilidad)
-* **Escenario A (Éxito directo):** Soporte indemniza emitiendo nota de crédito o acreditación en Mercado Pago en < 72 hs $\rightarrow$ **Avanzar a Fase 3.**
-* **Escenario B (Éxito condicionado):** Soporte solicita comprobante adicional (remito/factura) y luego acredita $\rightarrow$ **Ajustar el dossier y avanzar a Fase 3.**
-* **Escenario C (Rechazo):** Soporte rechaza el reclamo amparado en alguna cláusula no contemplada $\rightarrow$ **Pausar, reformular el modelo sin garantía de indemnización y reevaluar continuidad.**
+### 🛑 GATE DE DECISIÓN CRÍTICO (Hito de Viabilidad Económica)
+* **Escenario A (Indemnización total):** MeLi compensa el 100% del valor de venta del producto $\rightarrow$ **Modelo validado con alta rentabilidad. Avanzar a Fase 3.**
+* **Escenario B (Bonificación parcial por demora):** MeLi liquida una bonificación o compensación parcial de flete/gastos $\rightarrow$ **Medir el % real obtenido; recalibrar el pricing y la propuesta de valor antes de avanzar a Fase 3.**
+* **Escenario C (Rechazo sistemático):** MeLi desestima el reclamo amparado en cláusulas restrictivas $\rightarrow$ **Pausar el proyecto, suprimir garantías y evaluar viabilidad.**
 
 ---
 
