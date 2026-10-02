@@ -1,0 +1,20 @@
+{
+  "name": "reclameli",
+  "version": "0.1.0",
+  "description": "Motor determinístico de auditoría y recupero de fondos en Mercado Libre Argentina",
+  "main": "src/engine.js",
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "audit": "node scripts/run_audit.js",
+    "generate-sample": "node scripts/generate_sample.js"
+  },
+  "keywords": [
+    "mercadolibre",
+    "audit",
+    "ecommerce",
+    "saas",
+    "returns"
+  ],
+  "author": "",
+  "license": "ISC"
+}
