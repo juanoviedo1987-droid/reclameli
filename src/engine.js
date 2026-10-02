@@ -3,35 +3,88 @@ const fs = require('fs');
 const path = require('path');
 const { generateClaimDossier, generateNavigationGuide } = require('./dossier');
 
+let xlsx = null;
+try {
+  xlsx = require('xlsx');
+} catch (e) {
+  // Opcional si no está instalado
+}
+
 const COLUMN_ALIASES = {
-  orderId: ["id de la venta", "nro. de venta", "número de venta", "orden", "order_id", "código de la venta", "id"],
-  tracking: ["número de envío", "nro de envio", "tracking", "código de seguimiento", "shipping_id"],
+  orderId: ["# de venta", "id de la venta", "nro. de venta", "número de venta", "orden", "order_id", "código de la venta", "id"],
+  tracking: ["número de seguimiento", "número de envío", "nro de envio", "tracking", "código de seguimiento", "shipping_id"],
   itemTitle: ["título de la publicación", "producto", "item_title", "detalle", "descripción", "titulo"],
-  amount: ["total (ars)", "monto", "precio unitario", "total", "importe", "amount"],
-  status: ["estado de la venta", "estado", "status", "situación"],
+  amount: ["total (ars)", "ingresos por productos (ars)", "monto", "precio unitario", "total", "importe", "amount"],
+  status: ["estado", "estado de la venta", "status", "situación"],
+  statusDesc: ["descripción del estado", "subestado"],
+  refundAmount: ["anulaciones y reembolsos (ars)"],
+  openClaim: ["reclamo abierto"],
+  closedClaim: ["reclamo cerrado"],
   returnStatus: ["estado del envío de la devolución", "estado de devolución", "return_status", "subestado"],
-  returnDate: ["fecha de despacho de devolución", "fecha de devolución", "fecha envio", "return_date", "fecha de admisión", "fecha"],
-  isFull: ["tipo de logística", "logística", "full", "es_full", "canal de envío"]
+  returnDate: ["fecha en camino", "fecha de despacho de devolución", "fecha de devolución", "fecha envio", "return_date", "fecha de admisión", "fecha"],
+  isFull: ["tipo de logística", "logística", "full", "es_full", "canal de envío", "forma de entrega"]
 };
 
 function parseCSV(content) {
   const lines = content.split(/\r?\n/).filter(l => l.trim().length > 0);
   if (lines.length === 0) return [];
   
-  // Detect separator: comma or semicolon
-  const headerLine = lines[0];
-  const sep = headerLine.includes(';') ? ';' : ',';
+  const sep = lines[0].includes(';') ? ';' : ',';
   
-  const headers = headerLine.split(sep).map(h => h.trim().replace(/^["']|["']$/g, ''));
+  // Encontrar fila de encabezados salteando banners
+  let headerIdx = 0;
+  for (let i = 0; i < Math.min(10, lines.length); i++) {
+    const lower = lines[i].toLowerCase();
+    if (lower.includes('# de venta') || lower.includes('id de la venta') || lower.includes('order_id')) {
+      headerIdx = i;
+      break;
+    }
+  }
+
+  const headers = lines[headerIdx].split(sep).map(h => h.trim().replace(/^["']|["']$/g, ''));
   const records = [];
 
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = headerIdx + 1; i < lines.length; i++) {
     const values = lines[i].split(sep).map(v => v.trim().replace(/^["']|["']$/g, ''));
     const row = {};
     headers.forEach((h, idx) => {
       row[h] = values[idx] || '';
     });
     records.push(row);
+  }
+  return records;
+}
+
+function parseXLSX(filePath) {
+  if (!xlsx) {
+    throw new Error("El paquete 'xlsx' no está instalado. Ejecuta npm install xlsx.");
+  }
+  const wb = xlsx.readFile(filePath);
+  const sheet = wb.Sheets[wb.SheetNames[0]];
+  const rows = xlsx.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+  let headerRowIndex = 0;
+  for (let i = 0; i < Math.min(20, rows.length); i++) {
+    const row = rows[i];
+    if (Array.isArray(row)) {
+      const rowText = row.map(c => String(c).toLowerCase()).join(' ');
+      if ((rowText.includes('# de venta') || rowText.includes('número de venta') || rowText.includes('orden de compra')) && row.filter(c => c !== '').length > 5) {
+        headerRowIndex = i;
+        break;
+      }
+    }
+  }
+
+  const headers = rows[headerRowIndex].map(h => String(h || '').trim());
+  const records = [];
+  for (let i = headerRowIndex + 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r || r.length === 0 || !r.some(c => c !== '')) continue;
+    const rowObj = {};
+    headers.forEach((h, idx) => {
+      if (h) rowObj[h] = r[idx] !== undefined ? r[idx] : '';
+    });
+    records.push(rowObj);
   }
   return records;
 }
@@ -67,7 +120,8 @@ class ReclaMeliEngine {
         amount = parseFloat(cleaned) || 0;
       }
 
-      const returnStatus = String(findKey(row, COLUMN_ALIASES.returnStatus) || '').trim().toLowerCase();
+      const returnStatus = String(findKey(row, COLUMN_ALIASES.returnStatus) || findKey(row, COLUMN_ALIASES.statusDesc) || '').trim().toLowerCase();
+      const saleStatus = String(findKey(row, COLUMN_ALIASES.status) || '').trim().toLowerCase();
       const rawFull = findKey(row, COLUMN_ALIASES.isFull);
       const isFull = rawFull ? String(rawFull).toLowerCase().includes('full') : false;
 
@@ -87,7 +141,7 @@ class ReclaMeliEngine {
       const daysToExpire = Math.max(0, this.maxClaimWindowDays - daysStalled);
 
       // Regla 1: Siniestro confirmado pero no indemnizado
-      const isSiniestro = ['siniestrado', 'extraviado', 'perdido'].some(t => returnStatus.includes(t));
+      const isSiniestro = ['siniestrado', 'extraviado', 'perdido'].some(t => returnStatus.includes(t) || saleStatus.includes(t));
       if (isSiniestro) {
         const dateStr = returnDate ? returnDate.toISOString().slice(0, 10) : 'S/F';
         const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateStr, daysStalled, isFull });
@@ -99,7 +153,7 @@ class ReclaMeliEngine {
           daysStalled,
           daysToExpire,
           discrepancyType: "Siniestro / Extravío No Indemnizado",
-          carrierStatus: returnStatus,
+          carrierStatus: returnStatus || saleStatus,
           claimUrl: `https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
           navigationGuide: generateNavigationGuide(orderId),
           dossierText: dossier
@@ -109,7 +163,7 @@ class ReclaMeliEngine {
 
       // Regla 2: Devolución congelada en camino > minDaysStalled
       const isInTransit = ['en camino', 'en tránsito', 'demorado', 'revisión', 'en distribucion', 'retirando'].some(t => returnStatus.includes(t));
-      const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock'].some(t => returnStatus.includes(t));
+      const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock', 'llegó'].some(t => returnStatus.includes(t) || saleStatus.includes(t));
 
       if (isInTransit && !isDelivered && daysStalled >= this.minDaysStalled) {
         const discType = isFull ? "Faltante Interno en Depósito Full" : "Devolución Congelada en Camino";
@@ -146,19 +200,22 @@ class ReclaMeliEngine {
 
   auditFile(filePath, referenceDate = new Date()) {
     const ext = path.extname(filePath).toLowerCase();
-    const content = fs.readFileSync(filePath, 'utf8');
     let records = [];
 
-    if (ext === '.json') {
+    if (ext === '.xlsx' || ext === '.xls') {
+      records = parseXLSX(filePath);
+    } else if (ext === '.json') {
+      const content = fs.readFileSync(filePath, 'utf8');
       records = JSON.parse(content);
     } else if (ext === '.csv') {
+      const content = fs.readFileSync(filePath, 'utf8');
       records = parseCSV(content);
     } else {
-      throw new Error(`Formato no soportado directamente en modo puro: ${ext}. Usa .csv o .json`);
+      throw new Error(`Formato no soportado directamente: ${ext}. Usa .xlsx, .xls o .csv`);
     }
 
     return this.auditRecords(records, referenceDate);
   }
 }
 
-module.exports = { ReclaMeliEngine, parseCSV };
+module.exports = { ReclaMeliEngine, parseCSV, parseXLSX };

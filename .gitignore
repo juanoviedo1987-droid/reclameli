@@ -11,3 +11,4 @@ ENV/
 !data/samples/sample_*.xlsx
 .pytest_cache/
 .DS_Store
+node_modules/
