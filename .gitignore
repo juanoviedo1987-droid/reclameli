@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+venv/
+ENV/
+*.xlsx
+*.csv
+!data/samples/sample_*.csv
+!data/samples/sample_*.xlsx
+.pytest_cache/
+.DS_Store

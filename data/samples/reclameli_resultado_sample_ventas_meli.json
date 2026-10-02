@@ -1,0 +1,60 @@
+{
+  "totalSalesAudited": 7,
+  "totalDiscrepancies": 4,
+  "totalAmountRecoverable": 492400,
+  "criticalExpiringSoon": 1,
+  "records": [
+    {
+      "orderId": "2000008912345680",
+      "tracking": "43920192840",
+      "itemTitle": "Zapatillas Running Talle 42",
+      "amount": 86400,
+      "daysStalled": 24,
+      "daysToExpire": 6,
+      "discrepancyType": "Devolución Congelada en Camino",
+      "carrierStatus": "en camino a sucursal",
+      "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345680/detalle",
+      "navigationGuide": "1. Ingresar a: https://www.mercadolibre.com.ar/ventas/2000008912345680/detalle\n2. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n4. ¡TRUCO CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.\n5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.",
+      "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345680. La devolución fue admitida por el correo el 2026-09-08 (Tracking: 43920192840) y el seguimiento postal permanece inmovilizado en 'En camino' desde hace 24 días corridos, superando largamente el plazo de entrega comprometido. Habiéndose realizado el débito de los fondos hacia el comprador, intimo la anulación del cargo o indemnización de la venta a favor del vendedor bajo la póliza de seguro de transporte de la plataforma."
+    },
+    {
+      "orderId": "2000008912345681",
+      "tracking": "43920192841",
+      "itemTitle": "Smartwatch Reloj Sumergible IP68",
+      "amount": 54000,
+      "daysStalled": 18,
+      "daysToExpire": 12,
+      "discrepancyType": "Devolución Congelada en Camino",
+      "carrierStatus": "en tránsito por correo",
+      "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345681/detalle",
+      "navigationGuide": "1. Ingresar a: https://www.mercadolibre.com.ar/ventas/2000008912345681/detalle\n2. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n4. ¡TRUCO CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.\n5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.",
+      "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345681. La devolución fue admitida por el correo el 2026-09-14 (Tracking: 43920192841) y el seguimiento postal permanece inmovilizado en 'En camino' desde hace 18 días corridos, superando largamente el plazo de entrega comprometido. Habiéndose realizado el débito de los fondos hacia el comprador, intimo la anulación del cargo o indemnización de la venta a favor del vendedor bajo la póliza de seguro de transporte de la plataforma."
+    },
+    {
+      "orderId": "2000008912345682",
+      "tracking": "43920192842",
+      "itemTitle": "Taladro Percutor 20V + Maletín",
+      "amount": 142000,
+      "daysStalled": 21,
+      "daysToExpire": 9,
+      "discrepancyType": "Siniestro / Extravío No Indemnizado",
+      "carrierStatus": "extraviado por el transportista",
+      "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345682/detalle",
+      "navigationGuide": "1. Ingresar a: https://www.mercadolibre.com.ar/ventas/2000008912345682/detalle\n2. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n4. ¡TRUCO CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.\n5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.",
+      "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345682. La devolución fue admitida por el correo el 2026-09-11 (Tracking: 43920192842) y el seguimiento postal permanece inmovilizado en 'En camino' desde hace 21 días corridos, superando largamente el plazo de entrega comprometido. Habiéndose realizado el débito de los fondos hacia el comprador, intimo la anulación del cargo o indemnización de la venta a favor del vendedor bajo la póliza de seguro de transporte de la plataforma."
+    },
+    {
+      "orderId": "2000008912345683",
+      "tracking": "43920192843",
+      "itemTitle": "Cafetera Express Automática Inox",
+      "amount": 210000,
+      "daysStalled": 22,
+      "daysToExpire": 8,
+      "discrepancyType": "Faltante Interno en Depósito Full",
+      "carrierStatus": "en revisión en depósito full",
+      "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345683/detalle",
+      "navigationGuide": "1. Ingresar a: https://www.mercadolibre.com.ar/ventas/2000008912345683/detalle\n2. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n3. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n4. ¡TRUCO CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.\n5. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.",
+      "dossierText": "Solicito revisión de inventario y aplicación del Programa de Protección de Envíos Full (FPP) para la orden 2000008912345683 (Cafetera Express Automática Inox). La devolución fue remitida al centro de almacenamiento con fecha 2026-09-10 y no registra reingreso al inventario vendible ni clasificación como descarte tras más de 22 días. Solicito investigación de inventario y liquidación de la compensación correspondiente por extravío en depósito."
+    }
+  ]
+}
