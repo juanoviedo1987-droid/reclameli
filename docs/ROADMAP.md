@@ -35,15 +35,15 @@
 
 ## Detalle de Fases y Tareas
 
-### 🚀 FASE 1: Motor Funcional sin Marca (Estado: EN PROGRESO)
+### 🚀 FASE 1: Motor Funcional sin Marca (Estado: ✅ COMPLETADA)
 - [x] Arquitectura base de datos y modelos (`src/models.py`).
 - [x] Lógica de detección determinística y reglas de caducidad (`src/engine.py`).
 - [x] Generador de dossiers fácticos y rutas de navegación (`src/dossier.py`).
-- [ ] Interfaz mínima funcional (Dropzone web simple, sin diseño ni marca):
-  - Arrastrar archivo `.xlsx` o `.csv`.
+- [x] Interfaz mínima funcional (Dropzone web simple, sin diseño ni marca):
+  - Arrastrar archivo `.xlsx` o `.csv` (procesamiento 100% local en navegador con SheetJS).
   - Parseo inmediato con alias flexibles de columnas.
   - Tabla de resultados: órdenes en riesgo, días congelados, fecha límite de 30 días y monto total en riesgo (ARS).
-  - Visualización del texto del dossier generado para copiar.
+  - Visualización interactiva con botón de copiado de dossier y guía con el hack del botón "NO".
 
 ---
 
