@@ -22,6 +22,8 @@ const COLUMN_ALIASES = {
   closedClaim: ["reclamo cerrado"],
   returnStatus: ["estado del envío de la devolución", "estado de devolución", "return_status", "subestado"],
   returnDate: ["fecha en camino", "fecha de despacho de devolución", "fecha de devolución", "fecha envio", "return_date", "fecha de admisión", "fecha"],
+  returnDeliveredDate: ["fecha entregado", "fecha de entrega de devolución", "fecha entregada", "fecha recibido"],
+  dueDate: ["fecha prometida", "fecha límite", "fecha limite", "fecha estimada de entrega", "fecha estimada", "due_date", "vencimiento", "fecha compromiso", "plazo de reclamo"],
   isFull: ["tipo de logística", "logística", "full", "es_full", "canal de envío", "forma de entrega"]
 };
 
@@ -125,6 +127,7 @@ class ReclaMeliEngine {
       const rawFull = findKey(row, COLUMN_ALIASES.isFull);
       const isFull = rawFull ? String(rawFull).toLowerCase().includes('full') : false;
 
+      // Parseo de fecha de despacho de devolución
       const rawDate = findKey(row, COLUMN_ALIASES.returnDate);
       let returnDate = null;
       let daysStalled = 0;
@@ -138,13 +141,63 @@ class ReclaMeliEngine {
         }
       }
 
-      const daysToExpire = Math.max(0, this.maxClaimWindowDays - daysStalled);
+      // Prioridad 1: Si el archivo trae 'due_date' o 'fecha prometida' por fila, usar ESE dato exacto
+      const rawDueDate = findKey(row, COLUMN_ALIASES.dueDate);
+      let daysToExpire = Math.max(0, this.maxClaimWindowDays - daysStalled);
+      let hasExplicitDueDate = false;
+
+      if (rawDueDate) {
+        const parsedDue = new Date(rawDueDate);
+        if (!isNaN(parsedDue.getTime())) {
+          hasExplicitDueDate = true;
+          const diffMs = parsedDue.getTime() - referenceDate.getTime();
+          daysToExpire = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+        }
+      }
+
+      // Parseo de fecha de entrega de devolución
+      const rawDeliveredDate = findKey(row, COLUMN_ALIASES.returnDeliveredDate);
+      let returnDeliveredDate = null;
+      if (rawDeliveredDate) {
+        const p = new Date(rawDeliveredDate);
+        if (!isNaN(p.getTime())) returnDeliveredDate = p;
+      }
+
+      const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock', 'llegó'].some(t => returnStatus.includes(t) || saleStatus.includes(t)) || !!returnDeliveredDate;
+
+      // Regla 0 (NUEVA): Plazo crítico de 3 días corridos tras entrega de la devolución
+      if (isDelivered && returnDeliveredDate) {
+        const diffMs = referenceDate.getTime() - returnDeliveredDate.getTime();
+        const daysSinceDelivered = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+        const dateDeliveredStr = returnDeliveredDate.toISOString().slice(0, 10);
+
+        if (daysSinceDelivered <= 3) {
+          const daysLeft3d = Math.max(0, 3 - daysSinceDelivered);
+          const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateDeliveredStr, daysStalled: daysSinceDelivered, isFull, type: 'three_day_review' });
+          discrepancies.push({
+            orderId,
+            tracking,
+            itemTitle,
+            amount,
+            daysStalled: daysSinceDelivered,
+            daysToExpire: daysLeft3d,
+            isThreeDayWindow: true,
+            hasExplicitDueDate: false,
+            discrepancyType: "Revisión Urgente (Plazo de 3 Días post-entrega)",
+            carrierStatus: `Entregado hace ${daysSinceDelivered}d`,
+            claimUrl: `https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
+            navigationGuide: generateNavigationGuide(orderId, 'three_day_review'),
+            dossierText: dossier
+          });
+          continue;
+        }
+      }
 
       // Regla 1: Siniestro confirmado pero no indemnizado
       const isSiniestro = ['siniestrado', 'extraviado', 'perdido'].some(t => returnStatus.includes(t) || saleStatus.includes(t));
       if (isSiniestro) {
         const dateStr = returnDate ? returnDate.toISOString().slice(0, 10) : 'S/F';
-        const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateStr, daysStalled, isFull });
+        const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateStr, daysStalled, isFull, type: 'stalled' });
         discrepancies.push({
           orderId,
           tracking,
@@ -152,10 +205,12 @@ class ReclaMeliEngine {
           amount,
           daysStalled,
           daysToExpire,
+          isThreeDayWindow: false,
+          hasExplicitDueDate,
           discrepancyType: "Siniestro / Extravío No Indemnizado",
           carrierStatus: returnStatus || saleStatus,
           claimUrl: `https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
-          navigationGuide: generateNavigationGuide(orderId),
+          navigationGuide: generateNavigationGuide(orderId, 'stalled'),
           dossierText: dossier
         });
         continue;
@@ -163,12 +218,11 @@ class ReclaMeliEngine {
 
       // Regla 2: Devolución congelada en camino > minDaysStalled
       const isInTransit = ['en camino', 'en tránsito', 'demorado', 'revisión', 'en distribucion', 'retirando'].some(t => returnStatus.includes(t));
-      const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock', 'llegó'].some(t => returnStatus.includes(t) || saleStatus.includes(t));
 
       if (isInTransit && !isDelivered && daysStalled >= this.minDaysStalled) {
         const discType = isFull ? "Faltante Interno en Depósito Full" : "Devolución Congelada en Camino";
         const dateStr = returnDate ? returnDate.toISOString().slice(0, 10) : 'S/F';
-        const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateStr, daysStalled, isFull });
+        const dossier = generateClaimDossier({ orderId, trackingCode: tracking, itemTitle, dateReturnDispatchedStr: dateStr, daysStalled, isFull, type: 'stalled' });
 
         discrepancies.push({
           orderId,
@@ -177,17 +231,19 @@ class ReclaMeliEngine {
           amount,
           daysStalled,
           daysToExpire,
+          isThreeDayWindow: false,
+          hasExplicitDueDate,
           discrepancyType: discType,
           carrierStatus: returnStatus,
           claimUrl: `https://www.mercadolibre.com.ar/ventas/${orderId}/detalle`,
-          navigationGuide: generateNavigationGuide(orderId),
+          navigationGuide: generateNavigationGuide(orderId, 'stalled'),
           dossierText: dossier
         });
       }
     }
 
     const totalAmount = discrepancies.reduce((acc, d) => acc + d.amount, 0);
-    const expiringSoon = discrepancies.filter(d => d.daysToExpire > 0 && d.daysToExpire <= 7).length;
+    const expiringSoon = discrepancies.filter(d => (d.isThreeDayWindow && d.daysToExpire <= 2) || (!d.isThreeDayWindow && d.daysToExpire > 0 && d.daysToExpire <= 10)).length;
 
     return {
       totalSalesAudited: totalSales,

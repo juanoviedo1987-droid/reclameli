@@ -2,7 +2,7 @@
   "totalSalesAudited": 7,
   "totalDiscrepancies": 4,
   "totalAmountRecoverable": 492400,
-  "criticalExpiringSoon": 2,
+  "criticalExpiringSoon": 3,
   "records": [
     {
       "orderId": "2000008912345680",
@@ -11,10 +11,12 @@
       "amount": 86400,
       "daysStalled": 25,
       "daysToExpire": 5,
+      "isThreeDayWindow": false,
+      "hasExplicitDueDate": false,
       "discrepancyType": "Devolución Congelada en Camino",
       "carrierStatus": "en camino a sucursal",
       "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345680/detalle",
-      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345680/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Sugerencia operativa: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar habilitar la atención con un agente humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
+      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345680/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Si el bot responde diciendo que el paquete sigue en viaje y pregunta '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar derivar a un operador humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
       "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345680. La devolución fue admitida por el correo el 2026-09-08 (Tracking: 43920192840) y el seguimiento postal permanece inmovilizado en 'En camino' habiendo superado la fecha prometida de entrega comprometida. Habiéndose realizado el débito de los fondos hacia el comprador y encontrándose el reclamo dentro del plazo de 60 días, solicito la indemnización/bonificación correspondiente a favor del vendedor bajo la póliza de transporte de la plataforma."
     },
     {
@@ -24,10 +26,12 @@
       "amount": 54000,
       "daysStalled": 19,
       "daysToExpire": 11,
+      "isThreeDayWindow": false,
+      "hasExplicitDueDate": false,
       "discrepancyType": "Devolución Congelada en Camino",
       "carrierStatus": "en tránsito por correo",
       "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345681/detalle",
-      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345681/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Sugerencia operativa: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar habilitar la atención con un agente humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
+      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345681/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Si el bot responde diciendo que el paquete sigue en viaje y pregunta '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar derivar a un operador humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
       "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345681. La devolución fue admitida por el correo el 2026-09-14 (Tracking: 43920192841) y el seguimiento postal permanece inmovilizado en 'En camino' habiendo superado la fecha prometida de entrega comprometida. Habiéndose realizado el débito de los fondos hacia el comprador y encontrándose el reclamo dentro del plazo de 60 días, solicito la indemnización/bonificación correspondiente a favor del vendedor bajo la póliza de transporte de la plataforma."
     },
     {
@@ -37,10 +41,12 @@
       "amount": 142000,
       "daysStalled": 22,
       "daysToExpire": 8,
+      "isThreeDayWindow": false,
+      "hasExplicitDueDate": false,
       "discrepancyType": "Siniestro / Extravío No Indemnizado",
       "carrierStatus": "extraviado por el transportista",
       "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345682/detalle",
-      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345682/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Sugerencia operativa: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar habilitar la atención con un agente humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
+      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345682/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Si el bot responde diciendo que el paquete sigue en viaje y pregunta '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar derivar a un operador humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
       "dossierText": "Solicito formalmente la intervención logística y aplicación de la cobertura por extravío de Mercado Envíos para la orden 2000008912345682. La devolución fue admitida por el correo el 2026-09-11 (Tracking: 43920192842) y el seguimiento postal permanece inmovilizado en 'En camino' habiendo superado la fecha prometida de entrega comprometida. Habiéndose realizado el débito de los fondos hacia el comprador y encontrándose el reclamo dentro del plazo de 60 días, solicito la indemnización/bonificación correspondiente a favor del vendedor bajo la póliza de transporte de la plataforma."
     },
     {
@@ -50,10 +56,12 @@
       "amount": 210000,
       "daysStalled": 23,
       "daysToExpire": 7,
+      "isThreeDayWindow": false,
+      "hasExplicitDueDate": false,
       "discrepancyType": "Faltante Interno en Depósito Full",
       "carrierStatus": "en revisión en depósito full",
       "claimUrl": "https://www.mercadolibre.com.ar/ventas/2000008912345683/detalle",
-      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345683/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Sugerencia operativa: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar habilitar la atención con un agente humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
+      "navigationGuide": "1. Ingresar puntualmente a: https://www.mercadolibre.com.ar/ventas/2000008912345683/detalle\n2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).\n3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').\n4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.\n5. Si el bot responde diciendo que el paquete sigue en viaje y pregunta '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar derivar a un operador humano o pedir llamada.\n6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.",
       "dossierText": "Solicito revisión de inventario y aplicación del Programa de Protección de Envíos Full (FPP) para la orden 2000008912345683 (Cafetera Express Automática Inox). La devolución fue remitida al centro de almacenamiento con fecha 2026-09-10 y no registra reingreso al inventario vendible ni clasificación como descarte tras más de 23 días. Solicito investigación de inventario y liquidación de la compensación correspondiente por extravío en depósito."
     }
   ]
