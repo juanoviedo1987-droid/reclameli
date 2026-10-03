@@ -11,7 +11,7 @@
   (Parser + Detección + Dropzone Mínimo sobre datos sintéticos)
                 ↓
 [ FASE 2: Archivo Real y Validación del Caso Testigo ]
-  (Correr archivo real de seller + Ejecutar reclamo con Hack del Botón NO)
+  (Correr archivo real de seller + Reclamo con sugerencia de derivación humana)
                 ↓
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ GATE DE DECISIÓN CRÍTICO:                               ┃
@@ -42,8 +42,8 @@
 - [x] Interfaz mínima funcional (Dropzone web simple, sin diseño ni marca):
   - Arrastrar archivo `.xlsx` o `.csv` (procesamiento 100% local en navegador con SheetJS).
   - Parseo inmediato con alias flexibles de columnas.
-  - Tabla de resultados: órdenes en riesgo, días congelados, fecha límite de 30 días y monto total en riesgo (ARS).
-  - Visualización interactiva con botón de copiado de dossier y guía con el hack del botón "NO".
+  - Tabla de resultados: órdenes en riesgo, días congelados, límite de 60 días y monto total en riesgo (ARS).
+  - Visualización interactiva con botón de copiado de dossier y guía con sugerencia de derivación humana.
 
 ---
 
@@ -55,7 +55,7 @@
   2. Devolución despachada con tracking postal identificable.
   3. **Fecha prometida de entrega vencida** (condición sine qua non para habilitar el reclamo en MeLi).
   4. **Menos de 60 días corridos desde la creación de la devolución** (plazo máximo de caducidad fijado por MeLi).
-- [ ] Guiar al seller para ingresar el reclamo desde el **detalle de la venta puntual** (`/ventas/{id}/detalle`) ejecutando el **hack del botón "NO"** con el dossier de ReclaMeli.
+- [ ] Guiar al seller para ingresar el reclamo desde el **detalle de la venta puntual** (`/ventas/{id}/detalle`) aplicando la **sugerencia de derivación humana (botón "NO")** con el dossier de ReclaMeli.
 - [ ] Medir tiempo de respuesta, canal de acreditación (Mercado Pago vs Nota de Crédito) y **monto efectivamente liquidado**.
 
 ---
