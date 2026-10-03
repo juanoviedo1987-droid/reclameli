@@ -1,8 +1,9 @@
-ID de la venta,Número de envío,Título de la publicación,Total (ARS),Estado de la venta,Estado del envío de la devolución,Fecha de devolución,Tipo de logística
-2000008912345671,43920192831,Auriculares Bluetooth F9 In-Ear,$ 34.500,Entregado,,,Mercado Envíos
-2000008912345672,43920192832,Funda Silicona Antigolpe iPhone 15,$ 18.200,Entregado,,,Mercado Envíos
-2000008912345680,43920192840,Zapatillas Running Talle 42,$ 86.400,Cancelada,En camino a sucursal,2026-09-08,Mercado Envíos
-2000008912345681,43920192841,Smartwatch Reloj Sumergible IP68,$ 54.000,Cancelada,En tránsito por correo,2026-09-14,Mercado Envíos
-2000008912345682,43920192842,Taladro Percutor 20V + Maletín,$ 142.000,Cancelada,Extraviado por el transportista,2026-09-11,Mercado Envíos
-2000008912345683,43920192843,Cafetera Express Automática Inox,$ 210.000,Cancelada,En revisión en depósito Full,2026-09-10,Full
-2000008912345684,43920192844,Remera Algodón Peinado Manga Corta,$ 22.000,Cancelada,Entregado al vendedor,2026-09-20,Mercado Envíos
+ID de la venta,Número de envío,Título de la publicación,Total (ARS),Estado de la venta,Estado del envío de la devolución,Fecha de devolución,Fecha entregado,Fecha estimada de entrega,Tipo de logística
+2000008912345671,43920192831,Auriculares Bluetooth F9 In-Ear,$ 34.500,Entregado,,,,,Mercado Envíos
+2000008912345672,43920192832,Funda Silicona Antigolpe iPhone 15,$ 18.200,Entregado,,,,,Mercado Envíos
+2000008912345679,43920192839,Campera Térmica Impermeable Talle XL,$ 115.000,Cancelada,Entregado al vendedor,2026-10-02,2026-10-02,,Mercado Envíos
+2000008912345680,43920192840,Zapatillas Running Talle 42,$ 86.400,Cancelada,En camino a sucursal,2026-09-08,,,Mercado Envíos
+2000008912345681,43920192841,Smartwatch Reloj Sumergible IP68,$ 54.000,Cancelada,En tránsito por correo,2026-09-14,,2026-10-08,Mercado Envíos
+2000008912345682,43920192842,Taladro Percutor 20V + Maletín,$ 142.000,Cancelada,Extraviado por el transportista,2026-09-11,,,Mercado Envíos
+2000008912345683,43920192843,Cafetera Express Automática Inox,$ 210.000,Cancelada,En revisión en depósito Full,2026-09-10,,,Full
+2000008912345684,43920192844,Remera Algodón Peinado Manga Corta,$ 22.000,Cancelada,Entregado al vendedor,2026-09-20,2026-09-20,,Mercado Envíos

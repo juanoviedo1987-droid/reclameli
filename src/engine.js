@@ -165,6 +165,11 @@ class ReclaMeliEngine {
 
       const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock', 'llegó'].some(t => returnStatus.includes(t) || saleStatus.includes(t)) || !!returnDeliveredDate;
 
+      // Si figura entregado y no tiene columna específica de entrega, tomar fecha de devolución si está presente
+      if (isDelivered && !returnDeliveredDate && returnDate) {
+        returnDeliveredDate = returnDate;
+      }
+
       // Regla 0 (NUEVA): Plazo crítico de 3 días corridos tras entrega de la devolución
       if (isDelivered && returnDeliveredDate) {
         const diffMs = referenceDate.getTime() - returnDeliveredDate.getTime();

@@ -26,7 +26,7 @@
           Fase 1 — Motor de Validación Funcional
         </div>
         <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Auditor Forense de Devoluciones y Envíos</h1>
-        <p class="text-sm text-slate-500 mt-1">Detección de mercadería retenida, siniestros impagos y ventana de caducidad de 30 días en Mercado Libre Argentina.</p>
+        <p class="text-sm text-slate-500 mt-1">Detección de devoluciones demoradas, extravíos no indemnizados y alerta de revisión en 72hs según los plazos reglamentarios de Mercado Libre Argentina.</p>
       </div>
       <div class="text-xs text-slate-400 font-mono bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
         🔒 Privacidad: Procesamiento 100% local en tu navegador. Tus datos no viajan a ningún servidor.
@@ -68,6 +68,34 @@
         </div>
 
         <div id="fileInfo" class="mt-4 text-xs font-mono text-slate-500 hidden"></div>
+
+        <!-- Reglas auditadas según normativa MeLi -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6 text-left border-t border-slate-100 pt-5">
+          <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-rose-700 flex items-center gap-1.5 mb-1">
+              <span>🚨</span> Alerta Crítica de 72 Horas
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Detecta devoluciones entregadas hace ≤3 días para reportar roturas o paquete vacío antes de que MeLi libere el dinero al comprador.
+            </p>
+          </div>
+          <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-blue-700 flex items-center gap-1.5 mb-1">
+              <span>⏱️</span> Control de Fecha Prometida
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Prioriza la fecha de arribo comprometida por el correo por fila para intimar a soporte sin riesgo de desestimación.
+            </p>
+          </div>
+          <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+            <div class="text-xs font-bold text-amber-700 flex items-center gap-1.5 mb-1">
+              <span>🛡️</span> Límite Máximo de 60 Días
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Monitorea el plazo perentorio de caducidad desde el despacho de la devolución para exigir la indemnización por extravío o demora.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -323,6 +351,12 @@
         }
 
         const isDelivered = ['entregado', 'devuelto al vendedor', 'ingresado a stock', 'llegó'].some(t => returnStatus.includes(t) || saleStatus.includes(t)) || !!returnDeliveredDate;
+
+        // Si figura entregado y no tiene columna específica de entrega, tomar fecha de devolución si está presente
+        if (isDelivered && !returnDeliveredDate && returnDate) {
+          returnDeliveredDate = returnDate;
+        }
+
         const dateStr = returnDate ? returnDate.toISOString().slice(0, 10) : 'S/F';
 
         // Regla 0: Plazo crítico de 3 días corridos tras entrega de la devolución
@@ -628,25 +662,96 @@
       }
     });
 
-    // Cargar muestra sintética
+    // Cargar muestra sintética con casos representativos de las 3 reglas
     document.getElementById('btnSample').addEventListener('click', () => {
-      fetch('data/samples/sample_ventas_meli.csv')
-        .then(res => {
-          if (!res.ok) return fetch('/sample.csv');
-          return res;
-        })
-        .then(res => res.text())
-        .then(csvText => {
-          const fileInfo = document.getElementById('fileInfo');
-          fileInfo.textContent = "Analizando: Archivo sintético de prueba (con 4 casos de recupero)...";
-          fileInfo.classList.remove('hidden');
-          const records = parseCSVString(csvText);
-          const results = auditRecords(records);
-          renderResults(results);
-        })
-        .catch(err => {
-          alert("Error cargando archivo de muestra: " + err.message);
-        });
+      const now = new Date();
+      const formatDate = (d) => d.toISOString().slice(0, 10);
+      
+      const yesterday = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000);
+      const daysAgo25 = new Date(now.getTime() - 25 * 24 * 60 * 60 * 1000);
+      const daysAgo19 = new Date(now.getTime() - 19 * 24 * 60 * 60 * 1000);
+      const daysAgo22 = new Date(now.getTime() - 22 * 24 * 60 * 60 * 1000);
+      const daysAgo23 = new Date(now.getTime() - 23 * 24 * 60 * 60 * 1000);
+      const futureDue5 = new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000);
+
+      const sampleRecords = [
+        {
+          "ID de la venta": "2000008912345671",
+          "Número de envío": "43920192831",
+          "Título de la publicación": "Auriculares Bluetooth F9 In-Ear",
+          "Total (ARS)": "$ 34.500",
+          "Estado de la venta": "Entregado",
+          "Estado del envío de la devolución": "",
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345672",
+          "Número de envío": "43920192832",
+          "Título de la publicación": "Funda Silicona Antigolpe iPhone 15",
+          "Total (ARS)": "$ 18.200",
+          "Estado de la venta": "Entregado",
+          "Estado del envío de la devolución": "",
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345679",
+          "Número de envío": "43920192839",
+          "Título de la publicación": "Campera Térmica Impermeable Talle XL",
+          "Total (ARS)": "$ 115.000",
+          "Estado de la venta": "Cancelada",
+          "Estado del envío de la devolución": "Entregado al vendedor",
+          "Fecha de devolución": formatDate(yesterday),
+          "Fecha entregado": formatDate(yesterday),
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345680",
+          "Número de envío": "43920192840",
+          "Título de la publicación": "Zapatillas Running Talle 42",
+          "Total (ARS)": "$ 86.400",
+          "Estado de la venta": "Cancelada",
+          "Estado del envío de la devolución": "En camino a sucursal",
+          "Fecha de devolución": formatDate(daysAgo25),
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345681",
+          "Número de envío": "43920192841",
+          "Título de la publicación": "Smartwatch Reloj Sumergible IP68",
+          "Total (ARS)": "$ 54.000",
+          "Estado de la venta": "Cancelada",
+          "Estado del envío de la devolución": "En tránsito por correo",
+          "Fecha de devolución": formatDate(daysAgo19),
+          "Fecha estimada de entrega": formatDate(futureDue5),
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345682",
+          "Número de envío": "43920192842",
+          "Título de la publicación": "Taladro Percutor 20V + Maletín",
+          "Total (ARS)": "$ 142.000",
+          "Estado de la venta": "Cancelada",
+          "Estado del envío de la devolución": "Extraviado por el transportista",
+          "Fecha de devolución": formatDate(daysAgo22),
+          "Tipo de logística": "Mercado Envíos"
+        },
+        {
+          "ID de la venta": "2000008912345683",
+          "Número de envío": "43920192843",
+          "Título de la publicación": "Cafetera Express Automática Inox",
+          "Total (ARS)": "$ 210.000",
+          "Estado de la venta": "Cancelada",
+          "Estado del envío de la devolución": "En revisión en depósito Full",
+          "Fecha de devolución": formatDate(daysAgo23),
+          "Tipo de logística": "Full"
+        }
+      ];
+
+      const fileInfo = document.getElementById('fileInfo');
+      fileInfo.textContent = "Analizando: Muestra interactiva de prueba (simulando casos de 72hs, fecha prometida y límite 60d)...";
+      fileInfo.classList.remove('hidden');
+      const results = auditRecords(sampleRecords);
+      renderResults(results);
     });
   </script>
 </body>
