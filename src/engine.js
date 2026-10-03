@@ -101,7 +101,7 @@ function findKey(row, aliases) {
 class ReclaMeliEngine {
   constructor(options = {}) {
     this.minDaysStalled = options.minDaysStalled || 15;
-    this.maxClaimWindowDays = options.maxClaimWindowDays || 30;
+    this.maxClaimWindowDays = options.maxClaimWindowDays || 60;
   }
 
   auditRecords(records, referenceDate = new Date()) {

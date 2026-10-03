@@ -27,8 +27,8 @@ function generateNavigationGuide(orderId) {
     `2. VERIFICACIÓN PREVIA: Asegurarse de que la fecha prometida de entrega de la devolución esté cumplida/vencida (soporte desestima el reclamo si la fecha estimada está vigente).`,
     `3. Ir al pie de página y pulsar 'Ayuda con la venta' (o en los tres puntos 'Necesito ayuda').`,
     `4. Seleccionar: 'Tengo un problema con un envío' -> 'El paquete de la devolución está demorado / no llega' -> 'No recibí la devolución'.`,
-    `5. ¡HACK CLAVE!: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', hacer clic en 'NO'.`,
-    `6. Se habilitarán los botones para 'Chatear con nosotros' o 'Pedir que me llamen'. Pegar el texto del dossier.`
+    `5. Sugerencia operativa: Cuando el bot responda diciendo que el paquete sigue en viaje y pregunte '¿Te sirvió esta información?', probá hacer clic en 'NO' para intentar habilitar la atención con un agente humano o pedir llamada.`,
+    `6. Una vez habilitado el chat o la llamada, pegar el texto del dossier.`
   ].join('\n');
 }
 

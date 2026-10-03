@@ -86,7 +86,7 @@
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
           <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Vencimiento Inminente</span>
           <div id="kpiCritical" class="text-2xl md:text-3xl font-bold text-rose-600 mt-1">0 casos</div>
-          <span class="text-xs text-rose-500 mt-1 block font-medium">🚨 Caducan en menos de 7 días</span>
+          <span class="text-xs text-rose-500 mt-1 block font-medium">🚨 < 10 días para el límite de 60d</span>
         </div>
 
         <!-- KPI 3: Inconsistencias -->
@@ -119,7 +119,7 @@
                 <th class="px-6 py-3.5">Producto</th>
                 <th class="px-6 py-3.5">Monto (ARS)</th>
                 <th class="px-6 py-3.5">Inactividad</th>
-                <th class="px-6 py-3.5">Caducidad (30d)</th>
+                <th class="px-6 py-3.5">Plazo MeLi (Límite 60d)</th>
                 <th class="px-6 py-3.5">Tipo de Incidencia</th>
                 <th class="px-6 py-3.5 text-right">Acción</th>
               </tr>
@@ -144,12 +144,12 @@
           <p id="modalSubtitle" class="text-xs text-slate-500 font-mono mt-0.5"></p>
         </div>
 
-        <!-- Alerta Hack del Botón NO -->
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-xs text-amber-900 flex items-start gap-3">
+        <!-- Recomendación Operativa de Contacto -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 text-xs text-blue-900 flex items-start gap-3">
           <span class="text-lg">💡</span>
           <div>
-            <span class="font-bold">Estrategia para sortear el Bot de Mercado Libre:</span>
-            <p class="mt-1">Cuando el bot responda que el paquete sigue en viaje y pregunte <em>"¿Te sirvió esta información?"</em>, hacé clic en <strong class="underline font-bold text-amber-950">"NO"</strong>. Eso habilitará la llamada telefónica o el chat humano inmediato.</p>
+            <span class="font-bold">Recomendación operativa para contactar soporte:</span>
+            <p class="mt-1">Si el bot responde que el paquete continúa en viaje y pregunta <em>"¿Te sirvió esta información?"</em>, probá pulsar <strong class="underline font-bold text-blue-950">"NO"</strong> para intentar habilitar la atención con un operador humano o solicitar llamada telefónica.</p>
           </div>
         </div>
 
@@ -273,7 +273,7 @@
           }
         }
 
-        const daysToExpire = Math.max(0, 30 - daysStalled);
+        const daysToExpire = Math.max(0, 60 - daysStalled);
         const dateStr = returnDate ? returnDate.toISOString().slice(0, 10) : 'S/F';
 
         // Regla 1: Siniestro o extravío
@@ -311,7 +311,7 @@
         totalSalesAudited: records.length,
         totalDiscrepancies: discrepancies.length,
         totalAmountRecoverable: discrepancies.reduce((acc, d) => acc + d.amount, 0),
-        criticalExpiringSoon: discrepancies.filter(d => d.daysToExpire > 0 && d.daysToExpire <= 7).length,
+        criticalExpiringSoon: discrepancies.filter(d => d.daysToExpire > 0 && d.daysToExpire <= 10).length,
         records: discrepancies
       };
     }
@@ -354,14 +354,14 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50/70 transition";
 
-        // Badge de caducidad
+        // Badge de caducidad alineado al límite de 60 días
         let badgeCaducidad = '';
-        if (item.daysToExpire <= 7) {
-          badgeCaducidad = `<span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200 animate-pulse">🚨 Vence en ${item.daysToExpire}d</span>`;
-        } else if (item.daysToExpire <= 15) {
+        if (item.daysToExpire <= 10) {
+          badgeCaducidad = `<span class="inline-flex items-center gap-1 text-xs font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200 animate-pulse">🚨 Vence en ${item.daysToExpire}d (Límite 60d)</span>`;
+        } else if (item.daysToExpire <= 25) {
           badgeCaducidad = `<span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">⚠️ Vence en ${item.daysToExpire}d</span>`;
         } else {
-          badgeCaducidad = `<span class="text-xs text-slate-500 font-medium">Vence en ${item.daysToExpire}d</span>`;
+          badgeCaducidad = `<span class="text-xs text-slate-500 font-medium">En plazo (${item.daysToExpire}d restantes)</span>`;
         }
 
         tr.innerHTML = `
