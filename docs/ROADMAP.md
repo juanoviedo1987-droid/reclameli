@@ -78,6 +78,13 @@
 - [ ] Integración de checkout de Mercado Pago para desbloqueo del lote de dossiers.
 - [ ] Generación y descarga de Dossiers en PDF imprimible.
 - [ ] Interfaz de usuario final responsiva y pulida.
+- [ ] **Evolución a API Oficial de MeLi (Monitoreo Continuo para Suscripción SaaS):**
+  - Implementar conexión OAuth2 para lectura en tiempo real mediante endpoints oficiales de postventa:
+    - `/post-purchase/v1/claims/$CLAIM_ID`
+    - `/post-purchase/v2/claims/$CLAIM_ID/returns`
+    - `/shipments/$SHIPPING_ID/history`
+  - Suscripción al feed de notificaciones (`claims` feed) para alertas automáticas 24/7 sin depender de la subida periódica de archivos Excel.
+  - Consolidar el embudo en 2 etapas: **Adquisición con fricción cero (Excel local)** $\rightarrow$ **Retención SaaS (Conexión API con 1 clic)**.
 
 ---
 
