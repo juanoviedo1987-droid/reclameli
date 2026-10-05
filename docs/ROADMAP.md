@@ -48,14 +48,17 @@
 ---
 
 ### 🔍 FASE 2: Archivo Real y Caso Testigo
-- [ ] Obtener 1 reporte real de ventas/devoluciones de Mercado Libre de un seller de confianza (anonimizado).
-- [ ] Ejecutar el archivo en el motor funcional para validar compatibilidad de columnas y formatos reales.
+- [x] Prueba preliminar de compatibilidad de encabezados: Archivo real de Giuseppa Home (9 ventas reales, $0 ARS en riesgo, 0 falsos positivos confirmados).
+- [ ] Obtener 1 reporte real de ventas/devoluciones con devoluciones/Full reales de un seller de confianza.
+  - **Script de prospección vía WhatsApp:**
+    > *"Hola [Nombre]! Estoy validando una herramienta que audita el reporte de ventas de Mercado Libre y detecta devoluciones que quedaron congeladas en el correo o siniestros sin indemnizar que MeLi a veces no te paga si no los reclamás antes de los 60 días. La podés probar vos mismo en 1 minuto sin dar claves ni instalar nada en https://juanoviedo1987-droid.github.io/reclameli/ subiendo tu Excel de Ventas. ¿Te sirve que lo probemos con tus ventas del último mes a ver si te quedaron fondos colgados?"*
+- [ ] Ejecutar el archivo en el motor funcional para validar detección sobre devoluciones reales.
 - [ ] Identificar un caso que cumpla las **condiciones fácticas obligatorias**:
   1. Envío por Mercado Envíos (Colecta, Tradicional o Full).
   2. Devolución despachada con tracking postal identificable.
-  3. **Fecha prometida de entrega vencida** (condición sine qua non para habilitar el reclamo en MeLi).
+  3. **Fecha prometida de entrega vencida** (o entrega dentro de las **72 hs para revisión de disconformidad**).
   4. **Menos de 60 días corridos desde la creación de la devolución** (plazo máximo de caducidad fijado por MeLi).
-- [ ] Guiar al seller para ingresar el reclamo desde el **detalle de la venta puntual** (`/ventas/{id}/detalle`) aplicando la **sugerencia de derivación humana (botón "NO")** con el dossier de ReclaMeli.
+- [ ] Guiar al seller para ingresar el reclamo desde el **detalle de la venta puntual** (`/ventas/{id}/detalle`) aplicando la sugerencia de derivación humana con el dossier de ReclaMeli.
 - [ ] Medir tiempo de respuesta, canal de acreditación (Mercado Pago vs Nota de Crédito) y **monto efectivamente liquidado**.
 
 ---

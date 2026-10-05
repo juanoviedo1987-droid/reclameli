@@ -13,7 +13,7 @@ En Mercado Libre Argentina, cuando un comprador inicia una devolución o reclamo
 1. **Mercado Envíos Tradicional:** Paquetes despachados por el comprador quedan congelados en estado *"En camino"* por semanas o meses, sin llegar a manos del vendedor.
 2. **Mercado Envíos Full:** Devoluciones que ingresan al centro de distribución (Villa Madero) pero jamás son reingresadas al stock disponible para la venta (*merma oculta*).
 
-**ReclaMeli** es un Micro-SaaS B2B que cruza los reportes exportados de Mercado Libre en segundos, detecta discrepancias de dinero no recuperado antes de la ventana de caducidad (30 días), y genera un **Dossier de Reclamo Fáctico** con los enlaces y textos exactos para perforar el bot de soporte de Mercado Libre y forzar la indemnización económica.
+**ReclaMeli** es un Micro-SaaS B2B que cruza los reportes exportados de Mercado Libre en segundos, detecta discrepancias de dinero no recuperado según los plazos reglamentarios (revisión en 72hs, fecha prometida y límite general de 60 días), y genera un **Dossier de Reclamo Fáctico** con los enlaces y textos exactos para contactar a soporte de Mercado Libre y exigir la compensación económica.
 
 ---
 
@@ -23,9 +23,10 @@ El motor aplica reglas determinísticas sobre los reportes:
 
 | Caso | Regla de Detección | Acción Generada / Plazo Crítico |
 |---|---|---|
+| **🚨 Revisión Urgente Post-Entrega** | `Tracking = Entregado` + `≤ 3 días corridos (72hs)` | Intimación preventiva de retención de fondos al comprador por mercadería dañada, incompleta o cambiada. **Plazo crítico: 72 horas corridas**. |
 | **Devolución Congelada en Tránsito** | `Tracking = En camino` + `Fecha prometida de entrega vencida` | Reclamo desde el detalle de la venta una vez vencida la fecha prometida. **Límite duro: 60 días corridos** desde creación de la devolución. |
-| **Devolución Figura Entregada (No Recibida)** | `Tracking = Entregado` + `Vendedor no recibió paquete` | Reclamo formal por entrega no recibida. Ventana: **hasta 30 días** corridos desde la supuesta entrega. |
-| **Siniestro / Extravío Confirmado** | `Estado = Siniestrado / Extraviado` + `Compensación = NO` | Reclamo directo por póliza de flete de Mercado Envíos. |
+| **Devolución Figura Entregada (No Recibida)** | `Tracking = Entregado` + `Vendedor no recibió paquete` | Reclamo formal por entrega no recibida física. Ventana: **hasta 30 días corridos** desde la supuesta entrega. |
+| **Siniestro / Extravío Confirmado** | `Estado = Siniestrado / Extraviado` + `Compensación = NO` | Reclamo directo por póliza de flete de Mercado Envíos. Límite: **60 días corridos**. |
 | **Faltante en Full** | `Devolución ingresada al CD` + `Alta en stock = NO (> 15 días)` | Intimación por *Programa de Protección Full (FPP)* para compensación de inventario en depósito. |
 
 ---
