@@ -1,4 +1,4 @@
-# ReclaMeli 🚀
+# SaldoAudit 🚀
 > **Motor determinístico de auditoría y recupero de fondos en Mercado Libre Argentina.**
 
 [![GitHub](https://img.shields.io/badge/GitHub-juanoviedo1987--droid%2Freclameli-blue?logo=github)](https://github.com/juanoviedo1987-droid/reclameli)
@@ -13,7 +13,7 @@ En Mercado Libre Argentina, cuando un comprador inicia una devolución o reclamo
 1. **Mercado Envíos Tradicional:** Paquetes despachados por el comprador quedan congelados en estado *"En camino"* por semanas o meses, sin llegar a manos del vendedor.
 2. **Mercado Envíos Full:** Devoluciones que ingresan al centro de distribución (Villa Madero) pero jamás son reingresadas al stock disponible para la venta (*merma oculta*).
 
-**ReclaMeli** es un Micro-SaaS B2B que cruza los reportes exportados de Mercado Libre en segundos, detecta discrepancias de dinero no recuperado según los plazos reglamentarios (revisión en 72hs, fecha prometida y límite general de 60 días), y genera un **Dossier de Reclamo Fáctico** con los enlaces y textos exactos para contactar a soporte de Mercado Libre y exigir la compensación económica.
+**SaldoAudit** es un Micro-SaaS B2B que cruza los reportes exportados de Mercado Libre en segundos, detecta discrepancias de dinero no recuperado según los plazos reglamentarios (revisión en 72hs, fecha prometida y límite general de 60 días), y genera un **Dossier de Reclamo Fáctico** con los enlaces y textos exactos para contactar a soporte de Mercado Libre y exigir la compensación económica.
 
 ---
 
